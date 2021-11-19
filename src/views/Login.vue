@@ -204,6 +204,5 @@ export default {
   margin: 0 auto;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
 }
 </style>
