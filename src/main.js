@@ -9,7 +9,7 @@ import $update from '@/utils';
 import '@/assets/css/base.css';
 
 Vue.config.productionTip = false
-Vue.prototype.$update = $update
+Vue.prototype.$up = $update
 
 new Vue({
   router,

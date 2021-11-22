@@ -20,5 +20,27 @@ export default {
 
       _state[lastKey] = data
     }
+  },
+
+  updateDreadcrumbs(state, to) {
+    const route = to.params
+    if(to.name === 'Home') {
+      if(to.fullPath === '/login') {
+        sessionStorage.removeItem('Authorization')
+      }
+      state.breadcrumbs = state.breadcrumbs.splice(0, 1);
+      return;
+    };
+    
+    let index = state.breadcrumbs.findIndex(n => n.link === route.link)
+    
+    if(index > -1) {
+      state.breadcrumbs.disabled = true
+      state.breadcrumbs.length = index + 1;
+    } else {
+      let len = state.breadcrumbs.length
+      state.breadcrumbs[len - 1].disabled = false;
+      state.breadcrumbs.push(Object.assign(route, {disabled: true}))
+    }
   }
 }

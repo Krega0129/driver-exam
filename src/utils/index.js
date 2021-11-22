@@ -10,11 +10,22 @@ const update = function (key, value) {
   });
 }
 
-const showSnackbar = function (snackbarData) {
-  update('snackbar', snackbarData)
+const showSuccessSnackbar = function (text) {
+  update('snackbar', {
+    type: 'success',
+    text
+  })
+}
+
+const showErrorSnackbar = function (text) {
+  update('snackbar', {
+    type: 'error',
+    text
+  })
 }
 
 export default {
   update,
-  showSnackbar
+  showSuccessSnackbar,
+  showErrorSnackbar
 }

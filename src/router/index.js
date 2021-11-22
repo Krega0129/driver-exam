@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store';
 const Login = () => import('@/views/Login');
 const User = () => import('@/views/User');
 const Home = () => import('@/views/Home');
-const QuestionLibrary = () => import('@/views/QuestionLibrary');
+const SpecialPractice = () => import('@/views/SpecialPractice');
 const TestHistory = () => import('@/views/TestHistory');
 const ErrorDataBank = () => import('@/views/ErrorDataBank');
+const RandomPractice = () => import('@/views/RandomPractice');
 
 Vue.use(VueRouter)
 
@@ -20,9 +22,9 @@ const userChildren = [
     component: Home
   },
   {
-    path: 'question-library',
-    name: 'QuestionLibrary',
-    component: QuestionLibrary
+    path: 'special-practice',
+    name: 'SpecialPractice',
+    component: SpecialPractice
   },
   {
     path: 'test-history',
@@ -33,7 +35,12 @@ const userChildren = [
     path: 'error-data-bank',
     name: 'ErrorDataBank',
     component: ErrorDataBank
-  }
+  },
+  {
+    path: 'random-practice',
+    name: 'RandomPractice',
+    component: RandomPractice
+  },
 ]
 
 const routes = [
@@ -60,10 +67,11 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (sessionStorage.getItem('token') || to.fullPath === '/login') {
-    next()
-  } else {
+  if (!sessionStorage.getItem('Authorization') && to.fullPath !== '/login') {
     next('/login')
+  } else {
+    store.commit('updateDreadcrumbs', to)
+    next()
   }
 })
 

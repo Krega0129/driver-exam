@@ -1,7 +1,7 @@
 <template>
-  <v-container>
+  <div>
     历史试题
-  </v-container>
+  </div>
 </template>
 
 <script>

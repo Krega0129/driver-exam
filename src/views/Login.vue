@@ -37,7 +37,10 @@
             <v-form v-model="form.valid.createValid">
               <v-text-field
                 v-model="newUser.userName"
-                :rules="form.rules.userNameRules"
+                :rules="userNameRules"
+                :error="userNameIsExist"
+                :error-messages="form.errorMsg"
+                @input="debounceInput"
                 dense
                 outlined
                 label="账号"
@@ -94,6 +97,12 @@
 </template>
 
 <script>
+import { 
+  login,
+  register,
+  checkUserName
+} from '@/services/api';
+import { debounce } from '@/utils/debounce';
 export default {
   name: "login",
   data() {
@@ -109,13 +118,13 @@ export default {
       },
       form: {
         rules: {
-          userNameRules: [
-            (v) => !!v || "不能为空",
-            (v) => /[a-zA-Z0-9]{3,10}/.test(v) || "只允许3位以上的字母数字",
-          ],
+          // userNameRules: [
+          //   (v) => !!v || "不能为空",
+          //   (v) => /[a-zA-Z0-9]{3,10}/.test(v) || "只允许3位以上的字母数字"
+          // ],
           passwordRules: [
             (v) => !!v || "密码不能为空",
-            v => v && v.length >= 6 || '密码不能少于6个字符',
+            // v => v && v.length >= 6 || '密码不能少于6个字符',
             // v => /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/.test(v) || '密码必须包含大、小写字母、数字和字符'
           ],
         },
@@ -128,9 +137,11 @@ export default {
           registerEye: false,
           registerConfirmEye: false
         },
-        pending: false
+        pending: false,
+        errorMsg: ''
       },
       step: 0,
+      userNameIsExist: false
     };
   },
   computed: {
@@ -140,59 +151,73 @@ export default {
     valid() {
       const { createValid, loginValid } = this.form.valid
       return this.step ? createValid : loginValid
+    },
+    userNameRules() {
+      return [
+        (v) => !!v || "不能为空",
+        (v) => /[a-zA-Z0-9]{3,10}/.test(v) || "只允许3位以上的字母数字"
+      ]
     }
   },
   methods: {
     handleLoginAndRegister() {
-      let user;
       if(this.step) {
-        user = this.newUser
+        const { userName, password, confirmPassword } = this.newUser
         // 注册
-        if(user.password !== user.confirmPassword) {
-          this.$update.showSnackbar({
-            type: 'error',
-            text: '两次输入的密码不一致'
-          })
+        if(password !== confirmPassword) {
+          this.$up.showErrorSnackbar('两次输入的密码不一致')
           return;
         }
         this.form.pending = true
-        setTimeout(() => {
-          this.$update.showSnackbar({
-            type: 'success',
-            text: '注册成功'
-          })
+        register({
+          userName,
+          password
+        }).then((res) => {
+          this.handleLoginAndRegisterSuccess(0, res.data.token)
+        }).catch(err => {
+          this.$up.showErrorSnackbar(err.message)
+        }).finally(() => {
           this.form.pending = false
-        }, 1000)
+        })
       } else {
-        user = this.user
         this.form.pending = true
-        setTimeout(() => {
-          if(user.userName === 'user' && user.password === 'password') {
-            sessionStorage.setItem('token', 1);
-            this.$update.showSnackbar({
-              type: 'success',
-              text: '登录成功'
-            })
-            this.$router.replace('/user/home')
-          } else {
-            this.$update.showSnackbar({
-              type: 'error',
-              text: '登录失败'
-            })
-          }
+        login(this.user).then(({ data }) => {
+          this.handleLoginAndRegisterSuccess(1, data.token)
+        }).catch((err) => {
+          console.log(err);
+          this.$up.showErrorSnackbar('登录失败')
+        }).finally(() => {
           this.form.pending = false
-        }, 1000)
+        })
       }
+    },
+    handleLoginAndRegisterSuccess(flag, data) {
+      sessionStorage.setItem('Authorization', data);
+      this.$up.showSuccessSnackbar(flag ? '登录成功' : '注册成功')
+      this.$router.replace({
+        name: 'Home',
+        params: {data: 1}
+      })
+    },
+    debounceInput: debounce('inputUserName', 500),
+    inputUserName(e) {
+      checkUserName({
+        userName: e
+      }).then(({ data }) => {
+        this.userNameIsExist = !data
+        this.form.errorMsg = data ? '' : '用户名已存在'
+      }).catch((err) => {
+        console.log('用户名验证失败', err);
+      })
     }
-  },
-  watch: {},
+  }
 };
 </script>
 
 <style scoped>
 .login-bg {
   height: 100%;
-  background: url("../assets/images/login-bg.jpg");
+  background: url("../assets/images/login-bg.webp");
   background-attachment: fixed;
   background-size: 100% 100%;
 }

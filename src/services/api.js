@@ -5,6 +5,67 @@ export function login(data) {
   return chRequest({
     url: URL.LOGIN,
     method: 'POST',
-    data: data
+    data: data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
+export function register(data) {
+  return chRequest({
+    url: URL.REGISTER,
+    method: 'POST',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
+export function checkUserName(data) {
+  return chRequest({
+    url: URL.CHECKUSERNAME,
+    params: data
+  })
+}
+
+export function getQuestion(data) {
+  return chRequest({
+    url: URL.GETQUESTION,
+    method: 'POST',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
+export function questionJudge(data) {
+  return chRequest({
+    url: URL.QUESTIONJUDGE,
+    method: 'POST',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
+export function star(data) {
+  return chRequest({
+    url: URL.STAR,
+    method: 'POST',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
+export function woringQuestion(data) {
+  return chRequest({
+    url: URL.WORINGQUESTION,
+    params: data
   })
 }
