@@ -23,7 +23,7 @@
               column 
               dense
               :multiple="question.type == 3"
-              :readonly="Boolean(result.answer) || Boolean(question.myAnswer[0])"
+              :readonly="Boolean(result.answer || (question.myAnswer && question.myAnswer[0]))"
               v-model="res"
             >
               <v-radio
@@ -123,7 +123,6 @@ export default {
           id: -1,
           question: "题目",
           option: [],
-          myAnswer: [],
           answer: [],
           explain: "",
           pic: "",
@@ -137,14 +136,20 @@ export default {
     }
   },
   created() {
-    this.res = this.question.type === 3 
-                  ? (this.question.myAnswer || [])
-                  : (this.question.myAnswer[0] || '')
+    const {type, myAnswer} = this.question
+    // 多选
+    if(type === 3) {
+      this.res = myAnswer ?? []
+    } else {
+      this.res = (myAnswer && myAnswer[0]) ?? ''
+    }
   },
   computed: {
     color() {
-      return this.result.correct === true ? 'success' : 
-              (this.result.correct === false || this.question.myAnswer[0]) ? 'red' : ''
+      const {correct} = this.result
+      const {myAnswer} = this.question
+      return correct === true ? 'success' : 
+              (correct === false || (myAnswer && myAnswer[0])) ? 'red' : ''
     },
     questionType() {
       const { type } = this.question
