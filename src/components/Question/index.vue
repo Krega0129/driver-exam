@@ -19,10 +19,22 @@
       <v-card-text>
         <v-row>
           <v-col :lg="question.pic ? 4 : 12" :md="question.pic ? 6 : 12">
+            <div v-if="question.type === 3">
+              <v-checkbox
+                v-for="item in question.option"
+                v-model="res"
+                dense
+                :readonly="Boolean(result.answer || (question.myAnswer && question.myAnswer[0]))"
+                :key="item"
+                :label="item"
+                :color="color"
+                :value="item"
+              ></v-checkbox>
+            </div>
             <v-radio-group
               column 
               dense
-              :multiple="question.type == 3"
+              v-else
               :readonly="Boolean(result.answer || (question.myAnswer && question.myAnswer[0]))"
               v-model="res"
             >
@@ -64,7 +76,7 @@
                       :class="{ 'green--text': result.correct, 'red--text': !result.correct }"
                       class="ml-3"
                     >
-                      {{res.split('、')[0]}}
+                      {{ myAnswer }}
                     </span>
                     <v-icon 
                       :color="result.correct ? 'success' : 'error'"
@@ -135,15 +147,6 @@ export default {
       }
     }
   },
-  created() {
-    const {type, myAnswer} = this.question
-    // 多选
-    if(type === 3) {
-      this.res = myAnswer ?? []
-    } else {
-      this.res = (myAnswer && myAnswer[0]) ?? ''
-    }
-  },
   computed: {
     color() {
       const {correct} = this.result
@@ -154,11 +157,34 @@ export default {
     questionType() {
       const { type } = this.question
       return ['', '判断', '单选', '多选'][type]
+    },
+    myAnswer() {
+      let r = this.res
+      if(!Array.isArray(r)) r = [r]
+      return r.reduce((prev, cur) => {
+        return prev += cur.split('、')[0]
+      }, '')
     }
   },
+  created() {
+    this.setRes()
+  },
   methods: {
+    setRes() {
+      console.log(13434);
+      const {type, myAnswer} = this.question
+      this.result = {}
+      console.log(type);
+      // 多选
+      if(type === 3) {
+        this.res = myAnswer ?? []
+      } else {
+        this.res = (myAnswer && myAnswer[0]) ?? ''
+      }
+      console.log(this.res);
+    },
     nextQuestion() {
-      this.res = ''
+      this.setRes()
       this.result = {}
       this.$emit('nextQuestion')
     },
@@ -182,7 +208,16 @@ export default {
       }).catch(err => {
         this.$up.showErrorSnackbar('请求失败')
       })
-    },
+    }
+  },
+  watch: {
+    res: {
+      deep: true,
+      handler(newVal, oldVal) {
+        console.log('newVal', newVal);
+        console.log('oldVal', oldVal);
+      }
+    }
   }
 };
 </script>

@@ -4,6 +4,7 @@
   >
     <Question 
       :question="question"
+      ref="question"
       @nextQuestion="_getQuestion"
     >
       <template #toolbar>
@@ -196,16 +197,15 @@ export default {
     this._getQuestion();
   },
   methods: {
-    _getQuestion() {
+    async _getQuestion() {
       const { subjectId } = this.questionType
-      getQuestion({
+      await getQuestion({
         subjectId: subjectId + 1,
         type: this.questionType[`subject${subjectId + 1}Type`] === 0 ? '' : this.questionType[`subject${subjectId + 1}Type`],
         chapter: this.filterArg(this.questionType[`subject${subjectId + 1}Chapter`])
       })
         .then((res) => {
           this.question = res.data;
-          this.result = {}
         })
         .catch((err) => {
           console.log(err);
@@ -214,22 +214,15 @@ export default {
     filterArg(arg) {
       return arg === '全部' ? '' : arg
     },
-    changeQestionType() {
+    async changeQestionType() {
       this.questionType = Object.assign({}, this.newQuestionType)
-      this._getQuestion()
+      await this._getQuestion()
+      this.$refs.question.setRes()
       this.dialog = false
     }
-  },
-  watch: {
-    
-  },
+  }
 };
 </script>
 
 <style lang="scss">
-  ::v-deep {
-    .col {
-      flex-grow: 0
-    }
-  }
 </style>
