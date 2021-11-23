@@ -1,10 +1,10 @@
 <template>
-  <Question 
-    :question="question"
-    :result="result"
-    @nextQuestion="_getQuestion"
-    @answer="answer"
-  ></Question>
+  <v-card class="mt-5">
+    <Question 
+      :question="question"
+      @nextQuestion="_getQuestion"
+    ></Question>
+  </v-card>
 </template>
 
 <script>
@@ -29,8 +29,7 @@ export default {
         chapter: "",
         remark: "",
       },
-      radio: null,
-      result: {}
+      radio: null
     };
   },
   components: {
@@ -41,24 +40,14 @@ export default {
   },
   methods: {
     _getQuestion() {
-      getQuestion({
-        subjectId: 1
-      })
+      getQuestion({})
         .then((res) => {
           this.question = res.data;
-          this.result = {}
         })
         .catch((err) => {
           console.log(err);
         });
-    },
-    answer(e) {
-      this.result = {
-        answer: 'A',
-        correct: false,
-        explain: '恭喜你，回答正确！恭喜你，回答正确！恭喜你，回答正确！恭喜你，回答正确！恭喜你，回答正确！'
-      }
-    },
+    }
   },
   watch: {
     

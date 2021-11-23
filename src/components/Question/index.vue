@@ -1,7 +1,21 @@
 <template>
   <v-container>
     <v-card flat>
-      <v-card-title>{{ question.question }}</v-card-title>
+      <v-toolbar dense flat>
+        <slot name="toolbar"></slot>
+
+        <v-spacer></v-spacer>
+
+        <v-btn
+          :class="question.stared ? 'orange--text' : ''"
+          icon
+          @click="collect"
+        >
+          <v-icon>mdi-star</v-icon>
+        </v-btn>
+      </v-toolbar>
+      
+      <v-card-title>（{{questionType}}）{{ question.question }}</v-card-title>
       <v-card-text>
         <v-row>
           <v-col :lg="question.pic ? 4 : 12" :md="question.pic ? 6 : 12">
@@ -9,13 +23,13 @@
               column 
               dense
               :multiple="question.type == 3"
-              :error="result.correct === false"
-              :disabled="Boolean(result.answer)"
+              :readonly="Boolean(result.answer) || Boolean(question.myAnswer[0])"
               v-model="res"
             >
               <v-radio
                 v-for="item in question.option"
                 :key="item"
+                :color="color"
                 :label="item"
                 :value="item"
               ></v-radio>
@@ -77,21 +91,28 @@
           </v-col>
         </v-row>
       </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="success" outlined @click="$emit('answer', res)">确定</v-btn>
-        <v-btn class="success" @click="$emit('nextQuestion')"> 下一题 </v-btn>
-      </v-card-actions>
+      <slot name="action">
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="success" outlined @click="answer(res)">确定</v-btn>
+          <v-btn class="success" @click="nextQuestion"> 下一题 </v-btn>
+        </v-card-actions>
+      </slot>
     </v-card>
   </v-container>
 </template>
 
 <script>
+import {
+  questionJudge,
+  star
+} from "@/services/api";
 export default {
   name: "question",
   data() {
     return {
-      res: ''
+      res: [],
+      result: {}
     };
   },
   props: {
@@ -102,23 +123,61 @@ export default {
           id: -1,
           question: "题目",
           option: [],
-          answer: null,
+          myAnswer: [],
+          answer: [],
           explain: "",
           pic: "",
           mark: "",
-          type: 0,
+          type: 1,
           subjectId: 1,
           chapter: "",
           remark: "",
         }
       }
-    },
-    result: {
-      type: Object,
-      default() {
-        return {}
-      }
     }
+  },
+  created() {
+    this.res = this.question.type === 3 
+                  ? (this.question.myAnswer || [])
+                  : (this.question.myAnswer[0] || '')
+  },
+  computed: {
+    color() {
+      return this.result.correct === true ? 'success' : 
+              (this.result.correct === false || this.question.myAnswer[0]) ? 'red' : ''
+    },
+    questionType() {
+      const { type } = this.question
+      return ['', '判断', '单选', '多选'][type]
+    }
+  },
+  methods: {
+    nextQuestion() {
+      this.res = ''
+      this.result = {}
+      this.$emit('nextQuestion')
+    },
+    collect() {
+      star({
+        questionId: this.question.id
+      }).then(res => {
+        this.$up.showSuccessSnackbar('收藏成功')
+        this.question.stared = !this.question.stared
+      }).catch(err => {
+        this.$up.showErrorSnackbar(err.message || '收藏失败')
+      })
+    },
+    answer(e) {
+      if(!Array.isArray(e)) e = [e]
+      questionJudge({
+        answerList: e,
+        questionId: this.question.id
+      }).then(({data}) => {
+        this.result = data
+      }).catch(err => {
+        this.$up.showErrorSnackbar('请求失败')
+      })
+    },
   }
 };
 </script>

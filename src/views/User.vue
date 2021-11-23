@@ -163,11 +163,6 @@ export default {
     showUserInfo() {
       this.drawer = !this.drawer
     }
-  },
-  watch: {
-    '$store.state.loading'(val) {
-      console.log(val);
-    }
   }
 };
 </script>
