@@ -1,4 +1,6 @@
 export default {
+  userInfo: {},
+
   snackbar: {
     text: '',
     type: 'success'

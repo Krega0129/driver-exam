@@ -9,15 +9,67 @@
 
       <v-spacer></v-spacer>
 
-      <v-avatar
-        size="36px"
-        @click.stop="showUserInfo"
+      <v-menu
+        v-model="menu"
+        bottom
+        right
+        transition="scale-transition"
+        origin="top right"
       >
-        <img
-          alt="Avatar"
-          src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
-        >
-      </v-avatar>
+        <template v-slot:activator="{ on }">
+          <!-- <v-chip
+            pill
+            
+          > -->
+            <!-- <v-avatar
+              size="36px"
+              v-on="on"
+            >
+              <img
+                alt="Avatar"
+                :src="$store.state.userInfo.pic"
+              >
+            </v-avatar> -->
+
+            <v-btn small v-on="on">
+              <v-icon dense class="mr-2">mdi-account-circle</v-icon>
+              {{$store.state.userInfo.userName}}
+            </v-btn>
+            
+          <!-- </v-chip> -->
+        </template>
+        <v-card width="300">
+          <v-list dark>
+            <v-list-item>
+              <v-list-item-avatar>
+                <v-img :src="$store.state.userInfo.pic"></v-img>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title>{{$store.state.userInfo.userName}}</v-list-item-title>
+                <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-btn
+                  icon
+                  @click="menu = false"
+                >
+                  <v-icon>mdi-close-circle</v-icon>
+                </v-btn>
+              </v-list-item-action>
+            </v-list-item>
+          </v-list>
+          <v-list>
+            <v-list-item @click="() => {}">
+              <v-list-item-action>
+                <v-icon>mdi-briefcase</v-icon>
+              </v-list-item-action>
+              <v-list-item-subtitle>john@gmail.com</v-list-item-subtitle>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-menu>
+
+      
 
       <!-- <v-dialog>
         <template #activator="{ on, attrs }">
@@ -59,32 +111,6 @@
         </v-card>
       </v-dialog>
     </v-app-bar>
-    <!-- <v-navigation-drawer v-model="drawer" app>
-      <v-sheet color="amber lighten-3" class="pa-4">
-        <v-avatar class="mb-4" color="grey darken-1" size="64"></v-avatar>
-
-        <div>{{ userName }}</div>
-      </v-sheet>
-
-      <v-divider></v-divider>
-
-      <v-list>
-        <v-list-item
-          v-for="route in links"
-          :key="route.title"
-          link
-          :to="route.link"
-        >
-          <v-list-item-icon>
-            <v-icon>{{ route.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ route.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer> -->
 
     <v-navigation-drawer
         app
@@ -107,19 +133,6 @@
         <v-divider></v-divider>
 
         <v-list dense>
-          <!-- <v-list-item
-            v-for="item in items"
-            :key="item.title"
-            link
-          >
-            <v-list-item-icon>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item> -->
           <v-list-item
             link
             @click="logout"
@@ -153,7 +166,8 @@ export default {
   name: "user",
   data: () => ({
     userName: "userName",
-    drawer: null
+    drawer: null,
+    menu: false
   }),
   methods: {
     logout() {

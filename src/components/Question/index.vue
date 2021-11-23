@@ -106,8 +106,10 @@
       <slot name="action">
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="success" outlined @click="answer(res)">确定</v-btn>
-          <v-btn class="success" @click="nextQuestion"> 下一题 </v-btn>
+          <v-btn color="success" :disabled="!res" outlined @click="answer(res)">确定</v-btn>
+          <slot name="next">
+            <v-btn class="success" @click="nextQuestion"> 下一题 </v-btn>
+          </slot>
         </v-card-actions>
       </slot>
     </v-card>
@@ -117,7 +119,8 @@
 <script>
 import {
   questionJudge,
-  star
+  star,
+  deleteStar
 } from "@/services/api";
 export default {
   name: "question",
@@ -188,14 +191,15 @@ export default {
       this.result = {}
       this.$emit('nextQuestion')
     },
-    collect() {
-      star({
+    async collect() {
+      let fn = this.question.stared ? deleteStar : star
+      await fn({
         questionId: this.question.id
       }).then(res => {
-        this.$up.showSuccessSnackbar('收藏成功')
+        this.$up.showSuccessSnackbar(`${this.question.stared ? '取消' : ''}收藏成功`)
         this.question.stared = !this.question.stared
       }).catch(err => {
-        this.$up.showErrorSnackbar(err.message || '收藏失败')
+        this.$up.showErrorSnackbar(err.message || '操作失败')
       })
     },
     answer(e) {
@@ -211,13 +215,6 @@ export default {
     }
   },
   watch: {
-    res: {
-      deep: true,
-      handler(newVal, oldVal) {
-        console.log('newVal', newVal);
-        console.log('oldVal', oldVal);
-      }
-    }
   }
 };
 </script>

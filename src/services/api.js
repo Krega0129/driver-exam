@@ -52,9 +52,27 @@ export function questionJudge(data) {
   })
 }
 
+export function starQuestions(data) {
+  return chRequest({
+    url: URL.STARQUESTIONS,
+    params: data
+  })
+}
+
 export function star(data) {
   return chRequest({
     url: URL.STAR,
+    method: 'POST',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
+export function deleteStar(data) {
+  return chRequest({
+    url: URL.DELETESTAR,
     method: 'POST',
     data: data,
     headers: {
@@ -67,5 +85,11 @@ export function woringQuestion(data) {
   return chRequest({
     url: URL.WORINGQUESTION,
     params: data
+  })
+}
+
+export function getUserInfo() {
+  return chRequest({
+    url: URL.GETUSERINFO
   })
 }

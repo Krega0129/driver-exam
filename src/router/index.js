@@ -8,6 +8,7 @@ const SpecialPractice = () => import('@/views/SpecialPractice');
 const TestHistory = () => import('@/views/TestHistory');
 const ErrorDataBank = () => import('@/views/ErrorDataBank');
 const RandomPractice = () => import('@/views/RandomPractice');
+const QuestionCollection = () => import('@/views/QuestionCollection');
 
 Vue.use(VueRouter)
 
@@ -40,6 +41,11 @@ const userChildren = [
     path: 'random-practice',
     name: 'RandomPractice',
     component: RandomPractice
+  },
+  {
+    path: 'question-collection',
+    name: 'QuestionCollection',
+    component: QuestionCollection
   },
 ]
 

@@ -100,7 +100,8 @@
 import { 
   login,
   register,
-  checkUserName
+  checkUserName,
+  getUserInfo
 } from '@/services/api';
 import { debounce } from '@/utils/debounce';
 export default {
@@ -194,6 +195,11 @@ export default {
     handleLoginAndRegisterSuccess(flag, data) {
       sessionStorage.setItem('Authorization', data);
       this.$up.showSuccessSnackbar(flag ? '登录成功' : '注册成功')
+      getUserInfo().then((res) => {
+        console.log(res);
+      }).catch(err => {
+        this.$up.showErrorSnackbar('获取用户信息失败')
+      })
       this.$router.replace({
         name: 'Home',
         params: {data: 1}

@@ -66,8 +66,15 @@ export default {
           title: "错题集",
           link: "/user/error-data-bank",
           name: 'ErrorDataBank',
+          color: "red lighten-3 red--text"
+        },
+        {
+          icon: "mdi-star",
+          title: "收藏题目",
+          link: "/user/question-collection",
+          name: 'QuestionCollection',
           color: "yellow lighten-4 amber--text"
-        }
+        },
       ],
     };
   },
