@@ -174,10 +174,8 @@ export default {
   },
   methods: {
     setRes() {
-      console.log(13434);
       const {type, myAnswer} = this.question
       this.result = {}
-      console.log(type);
       // 多选
       if(type === 3) {
         this.res = myAnswer ?? []

@@ -76,7 +76,7 @@ router.beforeEach((to, from, next) => {
   if (!sessionStorage.getItem('Authorization') && to.fullPath !== '/login') {
     next('/login')
   } else {
-    store.commit('updateDreadcrumbs', to)
+    store.commit('updateBreadcrumbs', to)
     next()
   }
 })

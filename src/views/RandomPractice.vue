@@ -39,8 +39,8 @@ export default {
     this._getQuestion();
   },
   methods: {
-    _getQuestion() {
-      getQuestion({})
+    async _getQuestion() {
+      await getQuestion({})
         .then((res) => {
           this.question = res.data;
         })
