@@ -93,3 +93,25 @@ export function getUserInfo() {
     url: URL.GETUSERINFO
   })
 }
+
+export function autoCreateExam(data) {
+  return chRequest({
+    url: URL.AUTOCREATEEXAM,
+    method: 'POST',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
+export function examJudge(data) {
+  return chRequest({
+    url: URL.EXAMJUDGE,
+    method: 'POST',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}

@@ -26,12 +26,11 @@ export default {
     timeout: 2000,
   }),
   created() {
-    if(!this.$store.state.userInfo.hasOwnProperty('userName')) {
+    if(!this.$store.state.userInfo.hasOwnProperty('userName') && sessionStorage.getItem('Authorization')) {
       getUserInfo().then(({data}) => {
         this.$up.update('userInfo', data)
-        console.log(this.$store.state.userInfo);
       }).catch(err => {
-        this.$up.showErrorSnackbar('获取用户信息失败')
+        
       })
     }
   },

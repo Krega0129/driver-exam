@@ -29,6 +29,7 @@ export default function chRequest(config) {
       if(response.data.code === 401) {
         sessionStorage.removeItem('Authorization')
         router.replace('/login')
+        return response.data
       } else {
         if (response.data.success) {
           return response.data

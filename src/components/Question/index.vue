@@ -1,30 +1,41 @@
 <template>
   <v-container>
-    <v-card flat>
+    <v-card flat min-height="65vh">
       <v-toolbar dense flat>
         <slot name="toolbar"></slot>
 
         <v-spacer></v-spacer>
 
-        <v-btn
-          :class="question.stared ? 'orange--text' : ''"
-          icon
-          @click="collect"
-        >
-          <v-icon>mdi-star</v-icon>
-        </v-btn>
+        <v-tooltip bottom>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              :class="question.stared ? 'orange--text' : ''"
+              v-on="on"
+              v-bind="attrs"
+              icon
+              small
+              @click="collect"
+            >
+              <v-icon>mdi-star</v-icon>
+            </v-btn>
+          </template>
+          <span>{{(question.stared ? '已' : '') + '收藏'}}</span>
+        </v-tooltip>
       </v-toolbar>
       
-      <v-card-title>（{{questionType}}）{{ question.question }}</v-card-title>
+      <v-card-title>
+        <slot name="index"></slot>
+        ({{questionType}}){{ question.question }}
+      </v-card-title>
       <v-card-text>
-        <v-row>
+        <v-row dense>
           <v-col :lg="question.pic ? 4 : 12" :md="question.pic ? 6 : 12">
             <div v-if="question.type === 3">
               <v-checkbox
                 v-for="item in question.option"
                 v-model="res"
                 dense
-                :readonly="Boolean(result.answer || (question.myAnswer && question.myAnswer[0]))"
+                :readonly="readonly"
                 :key="item"
                 :label="item"
                 :color="color"
@@ -35,7 +46,7 @@
               column 
               dense
               v-else
-              :readonly="Boolean(result.answer || (question.myAnswer && question.myAnswer[0]))"
+              :readonly="readonly"
               v-model="res"
             >
               <v-radio
@@ -65,54 +76,72 @@
             </v-img>
           </v-col>
         </v-row>
-        <v-row v-if="result.answer">
+        <v-row v-if="showExplain">
           <v-col>
-            <v-expansion-panels flat>
-              <v-expansion-panel>
-                <v-expansion-panel-header disable-icon-rotate>
-                  <span>
-                    你的答案：
-                    <span 
-                      :class="{ 'green--text': result.correct, 'red--text': !result.correct }"
-                      class="ml-3"
-                    >
-                      {{ myAnswer }}
-                    </span>
-                    <v-icon 
-                      :color="result.correct ? 'success' : 'error'"
-                      class="mr-5"
-                    > {{ result.correct ? 'mdi-check' : 'mdi-close' }} </v-icon>
-                    <span v-if="!result.correct">
-                      正确答案：
-                      <span
-                        class="ml-3 green--text"
+            <slot name="explain">
+              <v-expansion-panels flat>
+                <v-expansion-panel>
+                  <v-expansion-panel-header disable-icon-rotate>
+                    <span>
+                      你的答案：
+                      <span 
+                        :class="{ 'green--text': result.correct, 'red--text': !result.correct }"
+                        class="ml-3"
                       >
-                        {{ result.answer }}
+                        {{ myAnswer }}
+                      </span>
+                      <v-icon 
+                        :color="result.correct ? 'success' : 'error'"
+                        class="mr-5"
+                      > {{ result.correct ? 'mdi-check' : 'mdi-close' }} </v-icon>
+                      <span v-if="!result.correct">
+                        正确答案：
+                        <span
+                          class="ml-3 green--text"
+                        >
+                          {{ result.answer }}
+                        </span>
                       </span>
                     </span>
-                  </span>
-                  <template v-slot:actions>
-                    题目解析
-                  </template>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  {{ result.explain }}
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-expansion-panels>
+                    <template v-slot:actions>
+                      题目解析
+                    </template>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    {{ result.explain }}
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </slot>
           </v-col>
         </v-row>
       </v-card-text>
-      <slot name="action">
+      <!-- <slot name="action">
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="success" :disabled="!res" outlined @click="answer(res)">确定</v-btn>
+          <v-btn 
+            class="success" 
+            :disabled="!res || !!result.hasOwnProperty('correct')" 
+            @click="answer(res)"
+          >确定</v-btn>
           <slot name="next">
-            <v-btn class="success" @click="nextQuestion"> 下一题 </v-btn>
+            <v-btn outlined color="success" @click="nextQuestion"> 下一题 </v-btn>
           </slot>
         </v-card-actions>
-      </slot>
+      </slot> -->
     </v-card>
+    <v-footer app>
+      <slot name="action"></slot>
+      <v-spacer></v-spacer>
+      <v-btn 
+        class="success mr-3" 
+        :disabled="!res || !!result.hasOwnProperty('correct')" 
+        @click="answer(res)"
+      >确定</v-btn>
+      <slot name="next">
+        <v-btn outlined color="success" @click="nextQuestion"> 下一题 </v-btn>
+      </slot>
+    </v-footer>
   </v-container>
 </template>
 
@@ -154,7 +183,7 @@ export default {
     color() {
       const {correct} = this.result
       const {myAnswer} = this.question
-      return correct === true ? 'success' : 
+      return (correct) ? 'success' : 
               (correct === false || (myAnswer && myAnswer[0])) ? 'red' : ''
     },
     questionType() {
@@ -167,26 +196,26 @@ export default {
       return r.reduce((prev, cur) => {
         return prev += cur.split('、')[0]
       }, '')
+    },
+    readonly() {
+      return Boolean(this.result.answer || (this.question.myAnswer && this.question.myAnswer[0]))
+    },
+    showExplain() {
+      return this.result.answer || (this.question.answer && !this.question.stared)
     }
-  },
-  created() {
-    this.setRes()
   },
   methods: {
     setRes() {
-      const {type, myAnswer} = this.question
-      this.result = {}
+      const {type, myAnswer, answer} = this.question
+      this.result = answer ?? {}
       // 多选
       if(type === 3) {
         this.res = myAnswer ?? []
       } else {
         this.res = (myAnswer && myAnswer[0]) ?? ''
       }
-      console.log(this.res);
     },
     nextQuestion() {
-      this.setRes()
-      this.result = {}
       this.$emit('nextQuestion')
     },
     async collect() {
@@ -207,12 +236,19 @@ export default {
         questionId: this.question.id
       }).then(({data}) => {
         this.result = data
+        this.$emit('answer', data, e)
       }).catch(err => {
         this.$up.showErrorSnackbar('请求失败')
       })
     }
   },
   watch: {
+    'question.id': {
+      immediate: true,
+      handler() {
+        this.setRes()
+      }
+    }
   }
 };
 </script>

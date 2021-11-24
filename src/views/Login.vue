@@ -192,11 +192,11 @@ export default {
         })
       }
     },
-    handleLoginAndRegisterSuccess(flag, data) {
+    async handleLoginAndRegisterSuccess(flag, data) {
       sessionStorage.setItem('Authorization', data);
       this.$up.showSuccessSnackbar(flag ? '登录成功' : '注册成功')
-      getUserInfo().then((res) => {
-        console.log(res);
+      await getUserInfo().then(({data}) => {
+        this.$up.update('userInfo', data)
       }).catch(err => {
         this.$up.showErrorSnackbar('获取用户信息失败')
       })

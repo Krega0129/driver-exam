@@ -1,8 +1,6 @@
 <template>
-  <v-container fluid fill-height style="position: relative">
+  <v-container fluid fill-height style="position: relative" class="blue-grey lighten-4">
     <v-app-bar dense app class="teal lighten-1">
-      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
-
       <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
         <span class="hidden-sm-and-down white--text">驾照帮</span>
       </v-toolbar-title>
@@ -17,26 +15,10 @@
         origin="top right"
       >
         <template v-slot:activator="{ on }">
-          <!-- <v-chip
-            pill
-            
-          > -->
-            <!-- <v-avatar
-              size="36px"
-              v-on="on"
-            >
-              <img
-                alt="Avatar"
-                :src="$store.state.userInfo.pic"
-              >
-            </v-avatar> -->
-
-            <v-btn small v-on="on">
-              <v-icon dense class="mr-2">mdi-account-circle</v-icon>
-              {{$store.state.userInfo.userName}}
-            </v-btn>
-            
-          <!-- </v-chip> -->
+          <v-btn small v-on="on">
+            <v-icon dense class="mr-2">mdi-account-circle</v-icon>
+            {{$store.state.userInfo.userName}}
+          </v-btn>
         </template>
         <v-card width="300">
           <v-list dark>
@@ -49,12 +31,19 @@
                 <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
-                <v-btn
-                  icon
-                  @click="menu = false"
-                >
-                  <v-icon>mdi-close-circle</v-icon>
-                </v-btn>
+                <v-tooltip bottom>
+                  <template #activator="{ on, attrs }">
+                    <v-btn
+                      icon
+                      v-on="on"
+                      v-bind="attrs"
+                      @click="logout"
+                    >
+                      <v-icon>mdi-exit-to-app</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>退出登录</span>
+                </v-tooltip>
               </v-list-item-action>
             </v-list-item>
           </v-list>
@@ -69,7 +58,22 @@
         </v-card>
       </v-menu>
 
-      
+      <template v-slot:extension>
+        <v-sheet width="100%" class="teal lighten-4">
+          <v-breadcrumbs class="pt-3" :items="$store.state.breadcrumbs">
+          <template v-slot:item="{ item }">
+            <v-breadcrumbs-item
+              exact-path
+              :to="item.link"
+              replace
+              :disabled="item.disabled"
+            >
+              {{ item.title }}
+            </v-breadcrumbs-item>
+          </template>
+        </v-breadcrumbs>
+        </v-sheet>
+      </template>
 
       <!-- <v-dialog>
         <template #activator="{ on, attrs }">
@@ -112,50 +116,37 @@
       </v-dialog>
     </v-app-bar>
 
-    <v-navigation-drawer
-        app
-        v-model="drawer"
-        fixed
-        right
-        temporary
-        overlay-opacity="0"
-      >
-        <v-list-item>
-          <v-list-item-avatar>
-            <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
-          </v-list-item-avatar>
+    <!-- <v-navigation-drawer
+      app
+      v-model="drawer"
+      fixed
+      right
+      temporary
+      overlay-opacity="0"
+    >
+      <v-list-item>
+        <v-list-item-avatar>
+          <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+        </v-list-item-avatar>
 
-          <v-list-item-content>
-            <v-list-item-title>John Leider</v-list-item-title>
-          </v-list-item-content>
+        <v-list-item-content>
+          <v-list-item-title>John Leider</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list dense>
+        <v-list-item
+          link
+          @click="logout"
+        >
+          退出登录
         </v-list-item>
+      </v-list>
+    </v-navigation-drawer> -->
 
-        <v-divider></v-divider>
-
-        <v-list dense>
-          <v-list-item
-            link
-            @click="logout"
-          >
-            退出登录
-          </v-list-item>
-        </v-list>
-      </v-navigation-drawer>
-
-    <v-breadcrumbs style="position: fixed; top: 40px" :items="$store.state.breadcrumbs">
-        <template v-slot:item="{ item }">
-          <v-breadcrumbs-item
-            exact-path
-            :to="item.link"
-            replace
-            :disabled="item.disabled"
-          >
-            {{ item.title }}
-          </v-breadcrumbs-item>
-        </template>
-      </v-breadcrumbs>
-
-    <v-main style="height: 100%" class="flex-grow-1 pt-16">
+    <v-main app style="height: 100%" class="main">
       <router-view></router-view>
     </v-main>
   </v-container>
@@ -181,6 +172,9 @@ export default {
 };
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+  ::v-deep .v-toolbar__extension {
+    padding: 0;
+    height: 20px;
+  }
 </style>

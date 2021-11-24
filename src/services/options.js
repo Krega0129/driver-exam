@@ -13,3 +13,6 @@ export const DELETESTAR = '/api/collection/deleteStar'
 export const STARQUESTIONS = '/api/collection/starQuestions'
 // 错题获取
 export const WORINGQUESTION = '/api/question/wrongQuestions'
+// 组卷
+export const AUTOCREATEEXAM = '/api/exam/autoCreateExam'
+export const EXAMJUDGE = '/api/exam/examJudge'

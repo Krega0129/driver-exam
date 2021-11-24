@@ -8,7 +8,7 @@
       <question
         :question="item"
       >
-        <template #action>
+        <template #explain>
           <v-expansion-panels flat>
             <v-expansion-panel>
               <v-expansion-panel-header>
@@ -31,6 +31,9 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
+        </template>
+        <template #action>
+          <div></div>
         </template>
       </question>
     </v-card>

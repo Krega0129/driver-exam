@@ -1,6 +1,7 @@
 <template>
   <v-card
     class="mt-5"
+    flat
   >
     <Question 
       :question="question"

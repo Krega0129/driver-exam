@@ -55,11 +55,18 @@ export default {
           color: "indigo lighten-4 indigo--text"
         },
         {
+          icon: "mdi-desktop-mac",
+          title: "模拟考试",
+          link: "/user/simulative-exam",
+          name: 'SimulativeExam',
+          color: "teal lighten-4 teal--text"
+        },
+        {
           icon: "mdi-history",
-          title: "历史试题",
+          title: "历史试卷",
           link: "/user/test-history",
           name: 'TestHistory',
-          color: "teal lighten-4 teal--text"
+          color: "orange lighten-4 orange--text"
         },
         {
           icon: "mdi-file-document",

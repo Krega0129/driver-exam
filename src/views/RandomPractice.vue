@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mt-5">
+  <v-card flat class="mt-5">
     <Question 
       :question="question"
       @nextQuestion="_getQuestion"
