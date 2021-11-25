@@ -37,7 +37,7 @@
             <v-form v-model="form.valid.createValid">
               <v-text-field
                 v-model="newUser.userName"
-                :rules="userNameRules"
+                :rules="form.rules.userNameRules"
                 :error="userNameIsExist"
                 :error-messages="form.errorMsg"
                 @input="debounceInput"
@@ -119,14 +119,14 @@ export default {
       },
       form: {
         rules: {
-          // userNameRules: [
-          //   (v) => !!v || "不能为空",
-          //   (v) => /[a-zA-Z0-9]{3,10}/.test(v) || "只允许3位以上的字母数字"
-          // ],
+          userNameRules: [
+            (v) => !!v || "不能为空",
+            (v) => /[a-zA-Z0-9]{3,10}/.test(v) || "只允许3位以上的字母数字"
+          ],
           passwordRules: [
             (v) => !!v || "密码不能为空",
-            // v => v && v.length >= 6 || '密码不能少于6个字符',
-            // v => /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/.test(v) || '密码必须包含大、小写字母、数字和字符'
+            v => v && v.length >= 6 || '密码不能少于6个字符',
+            v => /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/.test(v) || '密码必须包含大、小写字母、数字和字符'
           ],
         },
         valid: {
@@ -153,12 +153,12 @@ export default {
       const { createValid, loginValid } = this.form.valid
       return this.step ? createValid : loginValid
     },
-    userNameRules() {
-      return [
-        (v) => !!v || "不能为空",
-        (v) => /[a-zA-Z0-9]{3,10}/.test(v) || "只允许3位以上的字母数字"
-      ]
-    }
+    // userNameRules() {
+    //   return [
+    //     (v) => !!v || "不能为空",
+    //     (v) => /[a-zA-Z0-9]{3,10}/.test(v) || "只允许3位以上的字母数字"
+    //   ]
+    // }
   },
   methods: {
     handleLoginAndRegister() {
