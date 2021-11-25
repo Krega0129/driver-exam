@@ -4,6 +4,12 @@ module.exports = {
     'vuetify'
   ],
   productionSourceMap: process.env.NODE_ENV === 'production' ? false : true,
+  chainWebpack: config => {
+    config.plugin('html').tap(args => {
+      args[0].title = '驾照帮'
+      return args
+    })
+  },
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {// 为生产环境修改配置...
       config.mode = 'production';

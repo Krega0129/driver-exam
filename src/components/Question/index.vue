@@ -23,7 +23,7 @@
         </v-tooltip>
       </v-toolbar>
       
-      <v-card-title>
+      <v-card-title v-show="question.hasOwnProperty('id')">
         <slot name="index"></slot>
         ({{questionType}}){{ question.question }}
       </v-card-title>
@@ -122,28 +122,27 @@
           </v-col>
         </v-row>
       </v-card-text>
-      <!-- <slot name="action">
-        <v-card-actions>
+      <slot name="card-action">
+        <v-card-actions v-if="$route.fullPath === '/user/question-collection'">
           <v-spacer></v-spacer>
           <v-btn 
             class="success" 
             :disabled="!res || !!result.hasOwnProperty('correct')" 
             @click="answer(res)"
           >确定</v-btn>
-          <slot name="next">
-            <v-btn outlined color="success" @click="nextQuestion"> 下一题 </v-btn>
-          </slot>
         </v-card-actions>
-      </slot> -->
+      </slot>
     </v-card>
     <v-footer app>
       <slot name="action"></slot>
       <v-spacer></v-spacer>
-      <v-btn 
-        class="success mr-3" 
-        :disabled="!res || !!result.hasOwnProperty('correct')" 
-        @click="answer(res)"
-      >确定</v-btn>
+      <slot name="confirm">
+        <v-btn
+          class="success mr-3" 
+          :disabled="!res || !!result.hasOwnProperty('correct')" 
+          @click="answer(res)"
+        >确定</v-btn>
+      </slot>
       <slot name="next">
         <v-btn outlined color="success" @click="nextQuestion"> 下一题 </v-btn>
       </slot>
@@ -169,19 +168,7 @@ export default {
     question: {
       type: Object,
       default() {
-        return {
-          id: -1,
-          question: "题目",
-          option: [],
-          answer: [],
-          explain: "",
-          pic: "",
-          mark: "",
-          type: 1,
-          subjectId: 1,
-          chapter: "",
-          remark: "",
-        }
+        return {}
       }
     }
   },
@@ -204,10 +191,14 @@ export default {
       }, '')
     },
     readonly() {
-      return Boolean(this.result.answer || (this.question.myAnswer && this.question.myAnswer[0]))
+      return Boolean(
+        this.result.answer || 
+        // (this.question.myAnswer && this.question.myAnswer[0]) ||
+        this.$route.fullPath === '/user/error-data-bank'
+      )
     },
     showExplain() {
-      return this.result.answer || (this.question.answer && !this.question.stared)
+      return this.result.answer || (this.question.answer && this.$route.futhPath !== '/user/question-collection')
     }
   },
   methods: {
@@ -230,6 +221,7 @@ export default {
         questionId: this.question.id
       }).then(res => {
         this.$up.showSuccessSnackbar(`${this.question.stared ? '取消' : ''}收藏成功`)
+        this.$emit('getStarQuestion')
         this.question.stared = !this.question.stared
       }).catch(err => {
         this.$up.showErrorSnackbar(err.message || '操作失败')

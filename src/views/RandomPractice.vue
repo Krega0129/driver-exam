@@ -1,10 +1,12 @@
 <template>
-  <v-card flat class="mt-5">
-    <Question 
-      :question="question"
-      @nextQuestion="_getQuestion"
-    ></Question>
-  </v-card>
+  <v-container>
+    <v-card flat>
+      <Question 
+        :question="question"
+        @nextQuestion="_getQuestion"
+      ></Question>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -16,19 +18,7 @@ export default {
     return {
       type: [0],
       subjectId: 1,
-      question: {
-        id: -1,
-        question: "题目",
-        option: [],
-        answer: null,
-        explain: "",
-        pic: "",
-        mark: "",
-        type: 0,
-        subjectId: 1,
-        chapter: "",
-        remark: "",
-      },
+      question: {},
       radio: null
     };
   },

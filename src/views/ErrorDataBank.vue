@@ -33,18 +33,24 @@
           </v-expansion-panels>
         </template>
         <template #action>
+          <v-spacer></v-spacer>
+          <div style="max-width: 60vh">
+            <v-pagination
+            v-show="questionData[0]"
+            v-model="currentPage"
+            :length="totalPages"
+            @input="_getWoringQuestion"
+          ></v-pagination>
+          </div>
+        </template>
+        <template #confirm>
+          <div></div>
+        </template>
+        <template #next>
           <div></div>
         </template>
       </question>
     </v-card>
-    <div class="text-center">
-      <v-pagination
-        v-show="questionData[0]"
-        v-model="currentPage"
-        :length="totalPages"
-        @input="_getWoringQuestion"
-      ></v-pagination>
-    </div>
   </v-container>
 </template>
 

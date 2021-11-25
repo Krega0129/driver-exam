@@ -311,9 +311,15 @@ export default {
     answer(res, myAnswer) {
       res.correct ? this.totalCount.correct++ : this.totalCount.error++;
       this.questionJudgeBoList[this.currentQuestionIndex].answerList = myAnswer;
-      this.currentQuestion.correct = res.correct;
-      this.currentQuestion.answer = res;
-      this.currentQuestion.myAnswer = myAnswer;
+      let o = {
+        correct: res.correct,
+        answer: res,
+        myAnswer
+      }
+      Object.assign(this.currentQuestion, o)
+      // this.currentQuestion.correct = res.correct;
+      // this.currentQuestion.answer = res;
+      // this.currentQuestion.myAnswer = myAnswer;
     },
     submit() {
       const { duration, examName, startTime } = this.questionList;

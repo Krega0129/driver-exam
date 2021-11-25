@@ -28,7 +28,6 @@
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title>{{$store.state.userInfo.userName}}</v-list-item-title>
-                <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
                 <v-tooltip bottom>
@@ -46,20 +45,21 @@
                 </v-tooltip>
               </v-list-item-action>
             </v-list-item>
-          </v-list>
-          <v-list>
-            <v-list-item @click="() => {}">
-              <v-list-item-action>
-                <v-icon>mdi-briefcase</v-icon>
-              </v-list-item-action>
-              <v-list-item-subtitle>john@gmail.com</v-list-item-subtitle>
+            <v-divider></v-divider>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>预测通过率：</v-list-item-title>
+                <v-list-item-subtitle class="my-1">科目一：</v-list-item-subtitle>
+                <v-list-item-subtitle>科目四：</v-list-item-subtitle>
+              </v-list-item-content>
             </v-list-item>
+              
           </v-list>
         </v-card>
       </v-menu>
 
       <template v-slot:extension>
-        <v-sheet width="100%" class="teal lighten-4">
+        <v-sheet width="100%" class="teal lighten-5">
           <v-breadcrumbs class="pt-3" :items="$store.state.breadcrumbs">
           <template v-slot:item="{ item }">
             <v-breadcrumbs-item

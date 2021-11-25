@@ -3,7 +3,22 @@
     <v-data-table
       :items="examHistory"
       :headers="headers"
-    ></v-data-table>
+    >
+      <template v-slot:[`item.totalScore`]="{ item }">
+        <v-progress-circular
+          :value="item.totalScore"
+          :color="item.totalScore >= 90 ? 'success' : 'error'"
+        >
+        {{item.totalScore}}</v-progress-circular>
+      </template>
+      <template v-slot:[`item.passQuestion`]="{ item }">
+        <v-progress-circular
+          :value="item.totalScore"
+          :color="item.totalScore >= 90 ? 'success' : 'error'"
+        >
+        {{item.passQuestion}}</v-progress-circular>
+      </template>
+    </v-data-table>
   </v-container>
 </template>
 

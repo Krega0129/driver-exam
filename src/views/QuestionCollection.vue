@@ -6,20 +6,28 @@
       :key="item.id"
     >
       <question
+        @getStarQuestion="_getStarQuestion"
         :question="item"
       >
+        <template #action>
+          <v-spacer></v-spacer>
+          <v-pagination
+            v-show="questionData[0]"
+            v-model="currentPage"
+            :length="totalPages"
+            @input="_getStarQuestion"
+          ></v-pagination>
+        </template>
+        <template #confirm>
+          <div></div>
+        </template>
         <template #next>
           <div></div>
         </template>
       </question>
     </v-card>
-    <div class="text-center">
-      <v-pagination
-        v-show="questionData[0]"
-        v-model="currentPage"
-        :length="totalPages"
-        @input="_getStarQuestion"
-      ></v-pagination>
+    <div class="grey--text text-center" v-if="!questionData.length">
+      您还没有收藏题目，先去收藏吧~~
     </div>
   </v-container>
 </template>
