@@ -227,7 +227,7 @@ export default {
     },
     resultText() {
       return this.totalScore >= 90
-        ? `恭喜你，考试及格！`
+        ? `恭喜你，考试及格。\n“教练，我想加入车队！”`
         : `很遗憾，考试不及格，请下次继续努力！`;
     },
   },

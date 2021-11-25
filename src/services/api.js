@@ -115,3 +115,9 @@ export function examJudge(data) {
     }
   })
 }
+
+export function getHistory() {
+  return chRequest({
+    url: URL.GETHISTORY
+  })
+}

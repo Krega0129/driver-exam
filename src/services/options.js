@@ -16,3 +16,4 @@ export const WORINGQUESTION = '/api/question/wrongQuestions'
 // 组卷
 export const AUTOCREATEEXAM = '/api/exam/autoCreateExam'
 export const EXAMJUDGE = '/api/exam/examJudge'
+export const GETHISTORY = '/api/exam/getHistory'

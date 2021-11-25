@@ -104,7 +104,13 @@
                       </span>
                     </span>
                     <template v-slot:actions>
-                      题目解析
+                      <v-btn
+                        outlined
+                        dense
+                        color="success"
+                      >
+                        题目解析
+                      </v-btn>
                     </template>
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
