@@ -97,7 +97,6 @@
 
       <v-dialog
         v-model="$store.state.loading"
-        hide-overlay
         persistent
       >
         <v-card
