@@ -121,3 +121,9 @@ export function getHistory() {
     url: URL.GETHISTORY
   })
 }
+
+export function analysisExam() {
+  return chRequest({
+    url: URL.ANALYSISEXAM
+  })
+}

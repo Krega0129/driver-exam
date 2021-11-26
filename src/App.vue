@@ -26,11 +26,11 @@ export default {
     timeout: 2000,
   }),
   created() {
-    if(!this.$store.state.userInfo.hasOwnProperty('userName') && sessionStorage.getItem('Authorization')) {
+    if(sessionStorage.getItem('Authorization')) {
       getUserInfo().then(({data}) => {
-        this.$up.update('userInfo', data)
+        this.$up.update('userInfo', Object.assign(this.$store.state.userInfo, data))
       }).catch(err => {
-        
+        console.log(err);
       })
     }
   },

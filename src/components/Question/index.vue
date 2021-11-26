@@ -198,7 +198,7 @@ export default {
       )
     },
     showExplain() {
-      return this.result.answer || (this.question.answer && this.$route.futhPath !== '/user/question-collection')
+      return this.result.answer || (this.question.answer && this.$route.fullPath !== '/user/question-collection')
     }
   },
   methods: {

@@ -1,5 +1,10 @@
 export default {
-  userInfo: {},
+  userInfo: {
+    userName: '',
+    pic: '',
+    subject1Rate: '尚未考试',
+    subject2Rate: '尚未考试'
+  },
 
   snackbar: {
     text: '',

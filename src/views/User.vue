@@ -15,7 +15,7 @@
         origin="top right"
       >
         <template v-slot:activator="{ on }">
-          <v-btn small v-on="on">
+          <v-btn @click="getAnalysisExam" small v-on="on">
             <v-icon dense class="mr-2">mdi-account-circle</v-icon>
             {{$store.state.userInfo.userName}}
           </v-btn>
@@ -49,8 +49,8 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>预测通过率：</v-list-item-title>
-                <v-list-item-subtitle class="my-1">科目一：</v-list-item-subtitle>
-                <v-list-item-subtitle>科目四：</v-list-item-subtitle>
+                <v-list-item-subtitle class="my-1">科目一：<span>{{$store.state.userInfo.subject1Rate}}</span></v-list-item-subtitle>
+                <v-list-item-subtitle>科目四：<span>{{$store.state.userInfo.subject2Rate}}</span></v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
               
@@ -152,6 +152,9 @@
 </template>
 
 <script>
+import {
+  analysisExam
+} from '@/services/api';
 export default {
   name: "user",
   data: () => ({
@@ -159,6 +162,9 @@ export default {
     drawer: null,
     menu: false
   }),
+  created() {
+    // this.getAnalysisExam()
+  },
   methods: {
     logout() {
       sessionStorage.removeItem("Authorization");
@@ -166,6 +172,22 @@ export default {
     },
     showUserInfo() {
       this.drawer = !this.drawer
+    },
+    getAnalysisExam() {
+      analysisExam().then(({data}) => {
+        let rate = {}
+        data.forEach((item) => {
+          rate[`subject${item.subjectId}Rate`] = item.rate + '%'
+        })
+        console.log(rate);
+        console.log();
+        let userInfo = Object.assign({}, this.$store.state.userInfo, rate)
+        console.log(data);
+        console.log(this.$store.state.userInfo);
+        this.$up.update('userInfo', userInfo)
+      }).catch(err => {
+        console.log(err);
+      })
     }
   }
 };
