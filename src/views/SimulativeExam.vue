@@ -37,7 +37,7 @@
           <v-dialog width="500" v-model="leaveExamDialog">
             <v-card>
               <v-card-title
-                >当前试题还未提交，是否退出考试？退出后进度将不会保存，下次进入将重新考试考试！</v-card-title
+                >当前试题还未提交，是否退出考试？退出后进度将不会保存，下次进入将重新开始考试！</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
