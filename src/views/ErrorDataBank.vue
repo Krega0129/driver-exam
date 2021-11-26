@@ -51,6 +51,9 @@
         </template>
       </question>
     </v-card>
+    <div class="grey--text text-center" v-if="!questionData.length">
+      针不戳，你还没做错过题目~~
+    </div>
   </v-container>
 </template>
 

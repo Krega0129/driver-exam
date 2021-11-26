@@ -3,6 +3,7 @@
     <v-data-table
       :items="examHistory"
       :headers="headers"
+      no-data-text="你还没进行过模拟考试，先去试试吧~~"
     >
       <template v-slot:[`item.totalScore`]="{ item }">
         <v-progress-circular

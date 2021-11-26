@@ -196,7 +196,7 @@ export default {
       sessionStorage.setItem('Authorization', data);
       this.$up.showSuccessSnackbar(flag ? '登录成功' : '注册成功')
       await getUserInfo().then(({data}) => {
-        this.$up.update('userInfo', data)
+        this.$up.update('userInfo', Object.assign(this.$store.state.userInfo, data))
       }).catch(err => {
         this.$up.showErrorSnackbar('获取用户信息失败')
       })
