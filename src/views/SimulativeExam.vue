@@ -24,7 +24,7 @@
               <v-btn
                 v-on="on"
                 v-bind="attrs"
-                @click="leaveExamDialog = true"
+                @click="exitExam"
                 icon
                 color="error"
               >
@@ -320,6 +320,9 @@ export default {
       // this.currentQuestion.correct = res.correct;
       // this.currentQuestion.answer = res;
       // this.currentQuestion.myAnswer = myAnswer;
+    },
+    exitExam() {
+      this.$router.back()
     },
     submit() {
       const { duration, examName, startTime } = this.questionList;
