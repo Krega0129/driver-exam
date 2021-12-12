@@ -127,3 +127,16 @@ export function analysisExam() {
     url: URL.ANALYSISEXAM
   })
 }
+
+export function analysis() {
+  return chRequest({
+    url: URL.ANALYSIS
+  })
+}
+
+export function getExamRank(data) {
+  return chRequest({
+    url: URL.GETEXAMRANK,
+    params: data
+  })
+}

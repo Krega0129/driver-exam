@@ -1,12 +1,8 @@
 <template>
-  <v-container>
-    <v-card flat>
-      <Question 
-        :question="question"
-        @nextQuestion="_getQuestion"
-      ></Question>
-    </v-card>
-  </v-container>
+  <Question 
+    :question="question"
+    @nextQuestion="_getQuestion"
+  ></Question>
 </template>
 
 <script>

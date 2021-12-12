@@ -4,7 +4,9 @@ const Breadcrumbs = [
   ['test-history', '历史试题'],
   ['error-data-bank', '错题集'],
   ['random-practice', '随机练习'],
-  ['question-collection', '收藏题目']
+  ['question-collection', '收藏题目'],
+  ['top', '排行榜'],
+  ['analysis', '考试分析'],
 ]
 
 const ArrayToMap = function(arr) {

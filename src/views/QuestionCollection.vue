@@ -1,8 +1,8 @@
 <template>
-  <v-container fluid>
+  <div>
     <v-card
       v-for="item in questionData"
-      class="mt-3"
+      class="mt-3 bg-transparent"
       :key="item.id"
     >
       <question
@@ -29,7 +29,7 @@
     <div class="grey--text text-center" v-if="!questionData.length">
       您还没有收藏题目，先去收藏吧~~
     </div>
-  </v-container>
+  </div>
 </template>
 
 <script>

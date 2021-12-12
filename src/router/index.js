@@ -10,6 +10,8 @@ const ErrorDataBank = () => import('@/views/ErrorDataBank');
 const RandomPractice = () => import('@/views/RandomPractice');
 const QuestionCollection = () => import('@/views/QuestionCollection');
 const SimulativeExam = () => import('@/views/SimulativeExam');
+const Top = () => import('@/views/Top')
+const Analysis = () => import('@/views/Analysis')
 
 Vue.use(VueRouter)
 
@@ -52,6 +54,16 @@ const userChildren = [
     path: 'simulative-exam',
     name: 'SimulativeExam',
     component: SimulativeExam
+  },
+  {
+    path: 'top',
+    name: 'Top',
+    component: Top
+  },
+  {
+    path: 'analysis',
+    name: 'Analysis',
+    component: Analysis
   },
 ]
 

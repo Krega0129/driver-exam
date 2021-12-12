@@ -1,9 +1,9 @@
 <template>
-  <v-container flat>
+  <div>
     <div class="grey--text text-center" v-if="!question.hasOwnProperty('id')">
       没有该类型题目，换一个类型吧~~
     </div>
-    <v-card flat v-show="question.hasOwnProperty('id')">
+    <v-card flat class="bg-transparent" v-show="question.hasOwnProperty('id')">
       <Question 
         :question="question"
         ref="question"
@@ -13,7 +13,7 @@
           <v-dialog v-model="dialog">
             <template #activator="{ on, attrs }">
               <v-btn
-                color="primary"
+                color="cyan"
                 text
                 v-on="on"
                 v-bind="attrs"
@@ -131,7 +131,7 @@
         </template>
       </Question>
     </v-card>
-  </v-container>
+  </div>
     
 </template>
 

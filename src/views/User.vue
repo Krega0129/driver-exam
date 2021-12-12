@@ -1,6 +1,6 @@
 <template>
-  <v-container fluid fill-height style="position: relative" class="blue-grey lighten-4">
-    <v-app-bar dense app class="teal lighten-1">
+  <v-container fluid fill-height style="position: relative" class="bg">
+    <v-app-bar dense app class="blue-grey darken-4">
       <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
         <span class="hidden-sm-and-down white--text">驾照帮</span>
       </v-toolbar-title>
@@ -10,18 +10,19 @@
       <v-menu
         v-model="menu"
         bottom
+        class="blue-grey darken-1"
         right
         transition="scale-transition"
         origin="top right"
       >
         <template v-slot:activator="{ on }">
-          <v-btn @click="getAnalysisExam" small v-on="on">
+          <v-btn dark @click="getAnalysisExam" small v-on="on">
             <v-icon dense class="mr-2">mdi-account-circle</v-icon>
             {{$store.state.userInfo.userName}}
           </v-btn>
         </template>
         <v-card width="300">
-          <v-list dark>
+          <v-list>
             <v-list-item>
               <v-list-item-avatar>
                 <v-img :src="$store.state.userInfo.pic"></v-img>
@@ -46,32 +47,24 @@
               </v-list-item-action>
             </v-list-item>
             <v-divider></v-divider>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>预测通过率：</v-list-item-title>
-                <v-list-item-subtitle class="my-1">科目一：<span>{{$store.state.userInfo.subject1Rate}}</span></v-list-item-subtitle>
-                <v-list-item-subtitle>科目四：<span>{{$store.state.userInfo.subject2Rate}}</span></v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-              
           </v-list>
         </v-card>
       </v-menu>
 
       <template v-slot:extension>
-        <v-sheet width="100%" class="teal lighten-5">
-          <v-breadcrumbs class="pt-3" :items="$store.state.breadcrumbs">
-          <template v-slot:item="{ item }">
-            <v-breadcrumbs-item
-              exact-path
-              :to="item.link"
-              replace
-              :disabled="item.disabled"
-            >
-              {{ item.title }}
-            </v-breadcrumbs-item>
-          </template>
-        </v-breadcrumbs>
+        <v-sheet dark width="100%" style="background: rbga(0,0,0,0) !important">
+          <v-breadcrumbs class="pt-3 red--text" :items="$store.state.breadcrumbs">
+            <template v-slot:item="{ item }">
+              <v-breadcrumbs-item
+                exact-path
+                :to="item.link"
+                replace
+                :disabled="item.disabled"
+              >
+                {{ item.title }}
+              </v-breadcrumbs-item>
+            </template>
+          </v-breadcrumbs>
         </v-sheet>
       </template>
 
@@ -115,36 +108,6 @@
       </v-dialog>
     </v-app-bar>
 
-    <!-- <v-navigation-drawer
-      app
-      v-model="drawer"
-      fixed
-      right
-      temporary
-      overlay-opacity="0"
-    >
-      <v-list-item>
-        <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title>John Leider</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-divider></v-divider>
-
-      <v-list dense>
-        <v-list-item
-          link
-          @click="logout"
-        >
-          退出登录
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer> -->
-
     <v-main app style="height: 100%" class="main">
       <router-view></router-view>
     </v-main>
@@ -179,11 +142,7 @@ export default {
         data.forEach((item) => {
           rate[`subject${item.subjectId}Rate`] = item.rate + '%'
         })
-        console.log(rate);
-        console.log();
         let userInfo = Object.assign({}, this.$store.state.userInfo, rate)
-        console.log(data);
-        console.log(this.$store.state.userInfo);
         this.$up.update('userInfo', userInfo)
       }).catch(err => {
         console.log(err);
@@ -194,8 +153,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  ::v-deep .v-toolbar__extension {
-    padding: 0;
-    height: 20px;
+  ::v-deep {
+    .v-toolbar__extension {
+      padding: 0;
+      height: 20px;
+    }
+    .theme--dark.v-sheet {
+      background: rgba($color: #000000, $alpha: 0.1);
+    }
+    .v-breadcrumbs__item {
+      color: #00BCD4;
+    }
   }
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <v-container>
-    <v-card flat min-height="65vh">
-      <v-toolbar dense flat>
+  <v-container dark fluid class="fill-height">
+    <v-card flat min-height="65vh" dark class="card-bg full">
+      <v-toolbar dense flat light class="bg-transparent">
         <slot name="toolbar"></slot>
 
         <v-spacer></v-spacer>
@@ -13,6 +13,7 @@
               v-on="on"
               v-bind="attrs"
               icon
+              dark
               small
               @click="collect"
             >
@@ -79,8 +80,8 @@
         <v-row v-if="showExplain">
           <v-col>
             <slot name="explain">
-              <v-expansion-panels flat>
-                <v-expansion-panel>
+              <v-expansion-panels dark class="bg-transparent" flat>
+                <v-expansion-panel class="bg-transparent">
                   <v-expansion-panel-header disable-icon-rotate>
                     <span>
                       你的答案：
@@ -123,22 +124,24 @@
         </v-row>
       </v-card-text>
       <slot name="card-action">
-        <v-card-actions v-if="$route.fullPath === '/user/question-collection'">
+        <v-card-actions v-if="$route.fullPath === '/user/question-collection' && !showExplain">
           <v-spacer></v-spacer>
-          <v-btn 
-            class="success" 
+          <v-btn
+            dark
+            class="success mr-16" 
             :disabled="!res || !!result.hasOwnProperty('correct')" 
             @click="answer(res)"
           >确定</v-btn>
         </v-card-actions>
       </slot>
     </v-card>
-    <v-footer app>
+    <v-footer class="card-bg" app>
       <slot name="action"></slot>
       <v-spacer></v-spacer>
       <slot name="confirm">
         <v-btn
           class="success mr-3" 
+          dark
           :disabled="!res || !!result.hasOwnProperty('correct')" 
           @click="answer(res)"
         >确定</v-btn>

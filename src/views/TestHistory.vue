@@ -1,26 +1,30 @@
 <template>
-  <v-container>
-    <v-data-table
-      :items="examHistory"
-      :headers="headers"
-      no-data-text="你还没进行过模拟考试，先去试试吧~~"
-    >
-      <template v-slot:[`item.totalScore`]="{ item }">
-        <v-progress-circular
-          :value="item.totalScore"
-          :color="item.totalScore >= 90 ? 'success' : 'error'"
-        >
-        {{item.totalScore}}</v-progress-circular>
-      </template>
-      <template v-slot:[`item.passQuestion`]="{ item }">
-        <v-progress-circular
-          :value="item.totalScore"
-          :color="item.totalScore >= 90 ? 'success' : 'error'"
-        >
-        {{item.passQuestion}}</v-progress-circular>
-      </template>
-    </v-data-table>
-  </v-container>
+  <v-data-table
+    dark
+    height="70vh"
+    :items="examHistory"
+    :headers="headers"
+    no-data-text="你还没进行过模拟考试，先去试试吧~~"
+  >
+    <template v-slot:[`item.totalScore`]="{ item }">
+      <v-progress-circular
+        :value="item.totalScore"
+        :color="item.totalScore >= 90 ? 'success' : 'error'"
+      >
+      {{item.totalScore}}</v-progress-circular>
+    </template>
+    <template v-slot:[`item.passQuestion`]="{ item }">
+      <v-progress-circular
+        :value="item.totalScore"
+        :color="item.totalScore >= 90 ? 'success' : 'error'"
+      >
+      {{item.passQuestion}}</v-progress-circular>
+    </template>
+
+    <template v-slot:[`item.startTime`]="{ item }">
+      {{ item.startTime.split('T').join(' ') }}
+    </template>
+  </v-data-table>
 </template>
 
 <script>
@@ -45,6 +49,7 @@ export default {
   },
   created() {
     this._getHistory()
+    document.querySelector(".v-data-table__wrapper").classList.add("bar");
   },
   methods: {
     _getHistory() {

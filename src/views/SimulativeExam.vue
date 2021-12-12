@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <v-card flat v-if="!subjectDialog">
+  <div>
+    <v-card class="bg-transparent" flat v-if="!subjectDialog">
       <Question :question="currentQuestion" @answer="answer">
         <template #toolbar>
           <v-toolbar-title>
@@ -73,7 +73,7 @@
                   <v-icon> mdi-apps </v-icon>
                 </v-btn>
               </template>
-              <v-sheet>
+              <v-sheet class="grey lighten-2">
                 <v-row class="pa-5">
                   <v-sheet
                     rounded
@@ -169,7 +169,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -198,7 +198,7 @@ export default {
       currentQuestionIndex: 0,
       currentQuestion: {},
       submitDialog: false,
-      timer: "60:00",
+      timer: "00:00",
       resultDialog: false,
       subjectDialog: true,
       totalScore: 0,
@@ -279,7 +279,7 @@ export default {
         });
     },
     createClock() {
-      let endTime = new Date().getTime() + 3600000;
+      let endTime = new Date().getTime() + (this.subjectId === 1 ? 3600000 : 1800000);
       let t = setInterval(() => {
         let time = endTime - new Date().getTime();
         time -= 1000;

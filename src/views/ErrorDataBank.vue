@@ -1,16 +1,16 @@
 <template>
-  <v-container fluid>
+  <div>
     <v-card
       v-for="item in questionData"
-      class="mt-3"
+      class="mt-3 bg-transparent"
       :key="item.id"
     >
       <question
         :question="item"
       >
         <template #explain>
-          <v-expansion-panels flat>
-            <v-expansion-panel>
+          <v-expansion-panels dark class="bg-transparent" flat>
+            <v-expansion-panel class="bg-transparent">
               <v-expansion-panel-header>
                 <span>
                   题目解析
@@ -54,7 +54,7 @@
     <div class="grey--text text-center" v-if="!questionData.length">
       针不戳，你还没做错过题目~~
     </div>
-  </v-container>
+  </div>
 </template>
 
 <script>

@@ -3,6 +3,8 @@ export const LOGIN = '/api/user/login'
 export const REGISTER = '/api/user/register'
 export const GETUSERINFO = '/api/user/getUserInfo'
 export const CHECKUSERNAME = '/api/user/checkUserName'
+export const ANALYSIS = '/api/userQuestion/analysis'
+export const GETEXAMRANK = '/api/user/getExamRank'
 // 获取单道题目
 export const GETQUESTION = '/api/question/getRandomQuestion'
 // 题目判断
