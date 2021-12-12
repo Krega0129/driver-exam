@@ -25,7 +25,7 @@
           <v-list>
             <v-list-item>
               <v-list-item-avatar>
-                <v-img :src="$store.state.userInfo.pic"></v-img>
+                <v-img src="@/assets/images/head.webp"></v-img>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title>{{$store.state.userInfo.userName}}</v-list-item-title>
