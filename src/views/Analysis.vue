@@ -25,7 +25,7 @@
                   道题，正确题数为 
                   <span class="text-h4"> {{ analysis.subject1.totalPassCount }} </span>，
                   正确率为 
-                  <span class="text-h4"> {{ analysis.subject1.totalPassRate * 100 }} %</span>
+                  <span class="text-h4"> {{ (analysis.subject1.totalPassRate * 100).toFixed(2) }} %</span>
                 </v-card-text>
                 <v-card-text>
                   其中科目四总共完成 

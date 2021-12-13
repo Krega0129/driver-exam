@@ -202,6 +202,7 @@ export default {
       resultDialog: false,
       subjectDialog: true,
       totalScore: 0,
+      t: null
     };
   },
   components: {
@@ -228,7 +229,7 @@ export default {
     resultText() {
       return this.totalScore >= 90
         ? `恭喜你，考试及格。\n“教练，我想加入车队！”`
-        : `很遗憾，考试不及格，请下次继续努力！`;
+        : `很遗憾，考试不及格，道路千万条，安全第一条，请下次继续努力！`;
     },
   },
   mounted() {
@@ -258,7 +259,7 @@ export default {
     },
     _autoCreateExam() {
       autoCreateExam({
-        duration: 60,
+        duration: this.subjectId === 1 ? 60 : 30,
         subjectId: this.subjectId,
       })
         .then(({ data }) => {
@@ -280,12 +281,12 @@ export default {
     },
     createClock() {
       let endTime = new Date().getTime() + (this.subjectId === 1 ? 3600000 : 1800000);
-      let t = setInterval(() => {
+      this.t = setInterval(() => {
         let time = endTime - new Date().getTime();
         time -= 1000;
         if (time <= 0) {
           this.submit();
-          clearInterval(t);
+          clearInterval(this.t);
           return;
         }
         time = this.$up.formatTime(time).split(" ")[1].substring(3, 8);
@@ -357,6 +358,9 @@ export default {
     this.leaveExamDialog = true;
     this.navigatorFn = next;
   },
+  beforeDestroy() {
+    clearInterval(this.t)
+  }
 };
 </script>
 

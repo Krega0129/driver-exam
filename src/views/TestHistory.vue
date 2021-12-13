@@ -49,7 +49,7 @@ export default {
   },
   created() {
     this._getHistory()
-    document.querySelector(".v-data-table__wrapper").classList.add("bar");
+    // document.querySelector(".v-data-table__wrapper").classList.add("bar");
   },
   methods: {
     _getHistory() {
