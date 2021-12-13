@@ -25,7 +25,7 @@
                   道题，正确题数为 
                   <span class="text-h4"> {{ analysis.subject1.totalPassCount }} </span>，
                   正确率为 
-                  <span class="text-h4"> {{ analysis.subject1.totalPassRate }} %</span>
+                  <span class="text-h4"> {{ analysis.subject1.totalPassRate * 100 }} %</span>
                 </v-card-text>
                 <v-card-text>
                   其中科目四总共完成 
@@ -33,7 +33,7 @@
                   道题，正确题数为 
                   <span class="text-h4"> {{ analysis.subject2.totalPassCount }} </span>，
                   正确率为 
-                  <span class="text-h4"> {{ analysis.subject2.totalPassRate }} %</span>
+                  <span class="text-h4"> {{ analysis.subject2.totalPassRate * 100 }} %</span>
                 </v-card-text>
               </v-col>
               <v-col>
@@ -98,7 +98,7 @@
         <v-window-item>
           <v-card flat class="pl-16">
             <v-card-title>
-              在使用期间，您一共参加过模拟考试 <span class="text-h3"> {{ totalExamCount }} </span> 次，其中
+              在使用期间，您一共参加过模拟考试 <span class="text-h3"> {{ totalExamCount }} </span> 次
             </v-card-title>
             <v-card-text 
               v-for="item in examAnalysis"
@@ -114,7 +114,7 @@
             <!-- <v-card-text>
               科四考试 <span class="text-h3">5</span> 次，通过 <span class="text-h3">4</span> 次，通过率为 <span class="text-h3">80%</span>
             </v-card-text> -->
-            <v-card-text>
+            <v-card-text v-if="examAnalysis[0]">
               经过我们的细心推算，得出您
               <span
                 v-for="item in examAnalysis"
@@ -122,7 +122,11 @@
               >
                 通过{{ item.subjectName }}考试的概率为：
                   <span class="text-h3" :class="{'green--text': item.rate >= 90, 'red--text': item.rate < 90}">{{ item.rate }} %</span>，
-              </span></v-card-text>
+              </span>
+            </v-card-text>
+            <v-card-text>
+              若您想生成自己的考试通过率预测，请先进行模拟考试~~
+            </v-card-text>
           </v-card>
         </v-window-item>
       </v-window>
@@ -272,7 +276,7 @@ export default {
       return this.analysis.subject1.totalPassCount + this.analysis.subject2.totalPassCount
     },
     pie1PassRate() {
-      return (this.pie1PassCount / this.pie1Total * 100).toFixed(2)
+      return (this.pie1Total == 0 || this.pie1PassCount == 0) ? 0 : (this.pie1PassCount / this.pie1Total * 100).toFixed(2)
     },
     pie2Total() {
       return this.analysis.subject1.judgeTotalCount + this.analysis.subject2.judgeTotalCount
@@ -281,7 +285,7 @@ export default {
       return this.analysis.subject1.judgePassCount + this.analysis.subject2.judgePassCount
     },
     pie2PassRate() {
-      return (this.pie2PassCount / this.pie2Total * 100).toFixed(2)
+      return (this.pie2PassCount == 0 ||  this.pie2Total == 0) ? 0 : (this.pie2PassCount / this.pie2Total * 100).toFixed(2)
     },
     pie3Total() {
       return this.analysis.subject1.singleTotalCount + this.analysis.subject2.singleTotalCount
@@ -290,7 +294,7 @@ export default {
       return this.analysis.subject1.singlePassCount + this.analysis.subject2.singlePassCount
     },
     pie3PassRate() {
-      return (this.pie3PassCount / this.pie3Total * 100).toFixed(2)
+      return (this.pie3PassCount == 0 || this.pie3Total == 0) ? 0 : (this.pie3PassCount / this.pie3Total * 100).toFixed(2)
     },
     pie4Total() {
       return this.analysis.subject1.multipleTotalCount + this.analysis.subject2.multipleTotalCount
@@ -299,7 +303,7 @@ export default {
       return this.analysis.subject1.multiplePassCount + this.analysis.subject2.multiplePassCount
     },
     pie4PassRate() {
-      return (this.pie4PassCount / this.pie4Total * 100).toFixed(2)
+      return (this.pie4PassCount == 0 || this.pie4Total == 0) ? 0 : (this.pie4PassCount / this.pie4Total * 100).toFixed(2)
     }
   },
   mounted() {
