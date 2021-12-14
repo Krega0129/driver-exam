@@ -3,7 +3,7 @@
     <v-card class="bg-transparent" flat v-if="!subjectDialog">
       <Question :question="currentQuestion" @answer="answer">
         <template #toolbar>
-          <v-toolbar-title>
+          <v-toolbar-title class="white--text">
             {{ questionList.subject }}
           </v-toolbar-title>
         </template>
